@@ -1,0 +1,20 @@
+{
+  "name": "servidor_collatz",
+  "version": "1.0.1",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"No hay pruebas definidas\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chamalepavel/Servidor_Collatz.git"
+  },
+  "author": "Chamalepavel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chamalepavel/Servidor_Collatz/issues"
+  },
+  "homepage": "https://github.com/chamalepavel/Servidor_Collatz#readme",
+  "description": "Servidor Node.js para calcular la secuencia de Collatz"
+}
