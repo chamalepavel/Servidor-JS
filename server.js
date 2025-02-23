@@ -1,34 +1,40 @@
-const express = require("express");
+const http = require("http");
+const { parse } = require("url");
 
-const app = express();
+const HOST = "127.0.0.1";
 const PORT = 3000;
 
-function calcularCollatz(numero) {
-    let secuencia = [numero];
-
-    while (numero !== 1) {
-        if (numero % 2 === 0) {
-            numero = numero / 2;
-        } else {
-            numero = 3 * numero + 1;
-        }
-        secuencia.push(numero);
+const calcularCollatz = (num) => {
+    const resultado = [];
+    while (num !== 1) {
+        resultado.push(num);
+        num = num % 2 === 0 ? num / 2 : 3 * num + 1;
     }
+    resultado.push(1);
+    return resultado;
+};
 
-    return secuencia;
-}
+const servidor = http.createServer((solicitud, respuesta) => {
+    const { pathname, query } = parse(solicitud.url, true);
 
-app.get("/collatz", (req, res) => {
-    let numero = parseInt(req.query.numero);
+    if (pathname === "/collatz" && solicitud.method === "GET") {
+        const numero = parseInt(query.numero, 10);
 
-    if (isNaN(numero) || numero <= 0) {
-        res.status(400).json({ error: " número entero positivo." });
+        if (!Number.isInteger(numero) || numero <= 0) {
+            respuesta.writeHead(400, { "Content-Type": "application/json" });
+            respuesta.end(JSON.stringify({ error: "Ingrese un número entero positivo." }));
+            return;
+        }
+
+        const secuencia = calcularCollatz(numero);
+        respuesta.writeHead(200, { "Content-Type": "application/json" });
+        respuesta.end(JSON.stringify({ secuencia }));
     } else {
-        let resultado = calcularCollatz(numero);
-        res.json({ numero: numero, secuencia: resultado });
+        respuesta.writeHead(404, { "Content-Type": "application/json" });
+        respuesta.end(JSON.stringify({ error: "Ruta no encontrada." }));
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+servidor.listen(PORT, HOST, () => {
+    console.log(`Servidor activo en http://${HOST}:${PORT}/`);
 });
