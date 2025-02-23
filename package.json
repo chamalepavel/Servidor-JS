@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "echo \"No hay pruebas definidas\" && exit 1"
+    "test": "echo \"No hay pruebas \" && exit 1"
   },
   "repository": {
     "type": "git",
